@@ -150,9 +150,9 @@ void PointCloud<REAL,DIM>::initRandomSine(size_t N) {
     m_data.resize(N);
     for (i = 0; i<N; ++i) {
         PointType vec;
-        vec[0]= (rand() % 1000) / REAL(1000);
+        vec[0]= REAL(2) * boost::math::constants::pi<REAL>() * (rand() % 1000) / REAL(1000);
         for (j=1; j<DIM; ++j) {
-            vec[j]= sin(j * boost::math::constants::pi<REAL>() * vec[0]);
+            vec[j]= sin(j * vec[0]);
         }
         m_data[i] = vec;
     }

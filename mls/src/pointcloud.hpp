@@ -21,13 +21,13 @@ public:
     /// Store our matrix in a big 'ol std::vector
     typedef std::vector<PointType> PointVector;
 
+private:
     /// A type to represent hyperplanes (handy for projections)
     typedef Eigen::Hyperplane<REAL,DIM> Hyperplane;
 
     /// A type to represent dynamic matrices
     typedef Eigen::Matrix<REAL, Eigen::Dynamic, Eigen::Dynamic> MatrixXr;
 
-private:
     /// A KDTreeIndex type
     typedef nanoflann::KDTreeSingleIndexAdaptor<
         nanoflann::L2_Simple_Adaptor<REAL, PointCloud<REAL,DIM> > ,
@@ -56,7 +56,7 @@ public:
     /// Perform a moving least squares projection of the given point
     PointType mlsProject(const PointType& /*pt*/,
                          const REAL& /*radius*/,
-                         const REAL& /*tol*/ = REAL(0.00001));
+                         const REAL& /*tol*/ = REAL(1e-8));
 
     /// Testy McTesterson!
     void test_neighbour_query(const PointType /*query point*/, const REAL radius);
@@ -132,6 +132,9 @@ void PointCloud<REAL,DIM>::_init() {
     m_init = true;
 }
 
+/**
+ * A general clear function used to wipe away existing points and kdtree structures
+ */
 template <typename REAL, unsigned int DIM>
 void PointCloud<REAL,DIM>::_clear() {
     m_data.clear();
@@ -226,10 +229,10 @@ typename PointCloud<REAL,DIM>::PointType PointCloud<REAL,DIM>::mlsProject(const 
         // fit hyperplane. The result will tell us if any neighbours were found.
         if (weightedLS(cpt, radius, plane, idxDist) == 0) {
             // What should we do here? throw an error?
-            std::cout << "mlsProject(["<<pt.transpose()<<"],"<<radius<<") - no points within radius!\n";
+            //std::cout << "mlsProject(["<<pt.transpose()<<"],"<<radius<<") - no points within radius!\n";
             return cpt;
         } else {
-            std::cout << "mlsProject(["<<pt.transpose()<<"],"<<radius<<") - "<<idxDist.size()<<" points within radius!\n";
+            //std::cout << "mlsProject(["<<pt.transpose()<<"],"<<radius<<") - "<<idxDist.size()<<" points within radius!\n";
         }
 
         // If it all went well, we'll have a plane onto which the point can be projected
@@ -237,6 +240,7 @@ typename PointCloud<REAL,DIM>::PointType PointCloud<REAL,DIM>::mlsProject(const 
 
         // Our error is just the distance between the input point and our current point
         err = (tmp-cpt).norm();
+        //std::cout << "mlsProject(["<<pt.transpose()<<"],"<<radius<<") - err = "<<err<<"\n";
 
         // Update our current point to the projected point
         cpt = tmp;

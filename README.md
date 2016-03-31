@@ -1,4 +1,5 @@
 # Examples
 
-Note that the directory noise is an unaltered version of libnoise extracted from http://libnoise.sourceforge.net/ and included for convenience.
-
+External references for included packages:
+libnoise: http://libnoise.sourceforge.net/
+nanoflann: https://github.com/jlblancoc/nanoflann

@@ -1,4 +1,4 @@
-#include "scalarfield.h"
+#include "scalarfield.hpp"
 #include <iostream>
 #include <noise/src/noise.h>
 

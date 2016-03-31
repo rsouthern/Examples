@@ -13,8 +13,9 @@ LIBS += -lnoise -L./lib
 # Input
 SOURCES += src/main.cpp
 
-HEADERS += src/scalarfield.h \
-    src/catmulrom.h
+HEADERS += \
+    src/catmulrom.h \
+    src/scalarfield.hpp
 
 OTHER_FILES += scalarfied.dox
 
